@@ -11,7 +11,7 @@
             android:layout_height="157dp" app:srcCompat="@drawable/currency"
             android:layout_alignParentStart="true"
             android:id="@+id/imageView"
-            android:layout_alignParentTop="true" android:layout_marginTop="199dp"/>
+            android:layout_alignParentTop="true" android:layout_marginTop="199dp" android:contentDescription="@string/applogo"/>
     <Button
             android:text="@string/convert"
             android:layout_width="wrap_content"
