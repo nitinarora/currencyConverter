@@ -20,6 +20,7 @@ import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONObject
+import java.math.BigDecimal
 import java.net.URL
 import java.util.Currency
 import java.util.Locale
@@ -41,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         Volley.newRequestQueue(this).add<String?>(StringRequest(Request.Method.GET, apiURL.toString(), Response.Listener<String> { response ->
             val conversionValue = JSONObject(response)
             Log.i("Info", conversionValue.toString())
-            currentConversionRate = (conversionValue.get(conversionValue.names().get(0).toString()) as JSONObject)["val"] as Double
+            currentConversionRate = BigDecimal((conversionValue.get(conversionValue.names().get(0).toString()) as JSONObject)["val"].toString()).toDouble()
         }, Response.ErrorListener { }))
         return currentConversionRate
     }
@@ -59,8 +60,6 @@ class MainActivity : AppCompatActivity() {
         }
         return currenciesList.sorted().distinct()
     }
-
-    internal fun getLocalCurrency() = Currency.getInstance(Locale.getDefault()).currencyCode
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
