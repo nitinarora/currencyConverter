@@ -1,12 +1,10 @@
 package com.andcourse.micki.android_course_modules
 
-import android.content.Context
-import android.support.v7.app.AppCompatActivity
+import android.graphics.Color
+import android.graphics.PorterDuff
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.Toast
+import android.support.v7.app.AppCompatActivity
+import android.widget.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -32,7 +30,12 @@ class MainActivity : AppCompatActivity() {
             val convertedAmountinSEK = if(!amountEntered.isEmpty()) {
                 amountEntered.toString().toFloat() * CONVERSION_RATE_USD_TO_SEK
             } else 0f
-            Toast.makeText(this, "SEK: $convertedAmountinSEK", Toast.LENGTH_LONG).show()
+            val toast = Toast.makeText(this, "SEK: " + String.format("%.2f", convertedAmountinSEK), Toast.LENGTH_LONG)
+            val toastView = toast.view
+            toastView.background.setColorFilter(Color.DKGRAY, PorterDuff.Mode.SRC_IN)
+            val messageView = toastView.findViewById<TextView>(android.R.id.message)
+            messageView.setTextColor(Color.WHITE)
+            toast.show()
         }
     }
 }
