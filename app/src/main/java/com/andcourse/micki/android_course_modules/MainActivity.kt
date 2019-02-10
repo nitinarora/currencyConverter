@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         imageView = findViewById(R.id.imageView)
         currencyAmount = findViewById(R.id.editText)
 
-        val fromCurrency = "USD"
+        val fromCurrency = "GBP"
         val toCurrency = "SEK"
 
         extractConversionRate(fromCurrency, toCurrency)

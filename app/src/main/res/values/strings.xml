@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Currency Converter</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="convert">Convert</string>
+    <string name="enter_currency">Enter GBP</string>
+    <string name="applogo">appLogo</string>
+</resources>
