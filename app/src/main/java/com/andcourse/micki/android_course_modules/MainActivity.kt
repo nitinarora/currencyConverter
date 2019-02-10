@@ -45,12 +45,16 @@ class MainActivity : AppCompatActivity() {
         imageView = findViewById(R.id.imageView)
         currencyAmount = findViewById(R.id.editText)
 
+        val fromCurrency = "USD"
+        val toCurrency = "SEK"
+
+        extractConversionRate(fromCurrency, toCurrency)
 
         convertButton.setOnClickListener {
             val amountEntered = currencyAmount.text ?: ""
-            val convertedAmountinSEK = if (!amountEntered.isEmpty()) {
-                amountEntered.toString().toFloat() * extractConversionRate("USD", "SEK")
-            } else 0f
+            val convertedAmountinSEK:Double = if (!amountEntered.isEmpty()) {
+                amountEntered.toString().toFloat() * extractConversionRate(fromCurrency, toCurrency)
+            } else 0.0
             val toast = Toast.makeText(this, "SEK: " + String.format("%.2f", convertedAmountinSEK), Toast.LENGTH_LONG)
             val toastView = toast.view
             toastView.background.setColorFilter(Color.DKGRAY, PorterDuff.Mode.SRC_IN)
