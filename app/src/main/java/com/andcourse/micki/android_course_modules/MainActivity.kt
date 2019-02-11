@@ -1,5 +1,6 @@
 package com.andcourse.micki.android_course_modules
 
+import android.content.Context
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
@@ -67,6 +68,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val sharedPreferences = getPreferences(Context.MODE_PRIVATE)
         convertButton = findViewById(R.id.button)
         imageView = findViewById(R.id.imageView)
         currencyAmount = findViewById(R.id.editText)
@@ -83,8 +85,11 @@ class MainActivity : AppCompatActivity() {
         currencyList.adapter = arrayAdapter
         toCurrencyList.adapter = arrayAdapter
 
-        currencyList.setSelection(arrayAdapter.getPosition("USD"))
-        toCurrencyList.setSelection(arrayAdapter.getPosition("SEK"))
+        val savedFromCurrency = sharedPreferences.getString("fromCurrency", "USD")
+        val savedToCurrency = sharedPreferences.getString("toCurrency", "SEK")
+
+        currencyList.setSelection(arrayAdapter.getPosition(savedFromCurrency))
+        toCurrencyList.setSelection(arrayAdapter.getPosition(savedToCurrency))
 
         var fromCurrency:String
         var toCurrency: String
@@ -95,22 +100,47 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onItemSelected(parentView: AdapterView<*>, selectedItemView: View, position: Int, id: Long) {
+                val editor = sharedPreferences.edit()
                 fromCurrency = currencyList.selectedItem.toString()
                 toCurrency = toCurrencyList.selectedItem.toString()
                 extractConversionRate(fromCurrency, toCurrency)
+                editor.putString("fromCurrency", fromCurrency)
+                editor.putString("toCurrency", toCurrency)
+                editor.apply()
+            }
+        }
+        toCurrencyList.onItemSelectedListener = object : OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // do nothing for now
+            }
+
+            override fun onItemSelected(parentView: AdapterView<*>, selectedItemView: View, position: Int, id: Long) {
+                val editor = sharedPreferences.edit()
+                fromCurrency = currencyList.selectedItem.toString()
+                toCurrency = toCurrencyList.selectedItem.toString()
+                extractConversionRate(fromCurrency, toCurrency)
+                editor.putString("fromCurrency", fromCurrency)
+                editor.putString("toCurrency", toCurrency)
+                editor.apply()
             }
         }
 
         convertButton.setOnClickListener {
-            fromCurrency = currencyList.selectedItem.toString()
-            toCurrency = toCurrencyList.selectedItem.toString()
-            val conversionRate = extractConversionRate(fromCurrency, toCurrency)
+//            val editor = sharedPreferences.edit()
+            val savedFromCurrency = sharedPreferences.getString("fromCurrency", "USD")
+            val savedToCurrency = sharedPreferences.getString("toCurrency", "SEK")
+//            fromCurrency = currencyList.selectedItem.toString()
+//            toCurrency = toCurrencyList.selectedItem.toString()
+            val conversionRate = extractConversionRate(savedFromCurrency, savedToCurrency)
+//            editor.putString("fromCurrency", fromCurrency)
+//            editor.putString("toCurrency", toCurrency)
+//            editor.apply()
 
             val amountEntered = currencyAmount.text ?: ""
             val convertedAmountinSEK:Double = if (!amountEntered.isEmpty()) {
                 amountEntered.toString().toFloat() * conversionRate
             } else 0.0
-            val toast = Toast.makeText(this, "$toCurrency: " + String.format("%.2f", convertedAmountinSEK), Toast.LENGTH_LONG)
+            val toast = Toast.makeText(this, "$savedToCurrency: " + String.format("%.2f", convertedAmountinSEK), Toast.LENGTH_LONG)
             val toastView = toast.view
             toastView.background.setColorFilter(Color.DKGRAY, PorterDuff.Mode.SRC_IN)
 
