@@ -32,6 +32,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var imageView: ImageView
     private lateinit var currencyAmount: EditText
     private lateinit var currencyList: Spinner
+    private lateinit var toCurrencyList: Spinner
+    private lateinit var textView: TextView
 
 
     private var currentConversionRate: Double = 0.0
@@ -69,6 +71,8 @@ class MainActivity : AppCompatActivity() {
         imageView = findViewById(R.id.imageView)
         currencyAmount = findViewById(R.id.editText)
         currencyList = findViewById(R.id.spinner)
+        toCurrencyList = findViewById(R.id.spinner2)
+        textView = findViewById(R.id.textView)
 
         val currenciesList = getCurrenciesList()
 
@@ -77,8 +81,10 @@ class MainActivity : AppCompatActivity() {
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
         currencyList.adapter = arrayAdapter
+        toCurrencyList.adapter = arrayAdapter
 
         currencyList.setSelection(arrayAdapter.getPosition("USD"))
+        toCurrencyList.setSelection(arrayAdapter.getPosition("SEK"))
 
         var fromCurrency:String
         var toCurrency: String
@@ -90,23 +96,26 @@ class MainActivity : AppCompatActivity() {
 
             override fun onItemSelected(parentView: AdapterView<*>, selectedItemView: View, position: Int, id: Long) {
                 fromCurrency = currencyList.selectedItem.toString()
-                toCurrency = "SEK"
+                toCurrency = toCurrencyList.selectedItem.toString()
                 extractConversionRate(fromCurrency, toCurrency)
             }
         }
 
         convertButton.setOnClickListener {
             fromCurrency = currencyList.selectedItem.toString()
-            toCurrency = "SEK"
+            toCurrency = toCurrencyList.selectedItem.toString()
             val conversionRate = extractConversionRate(fromCurrency, toCurrency)
 
             val amountEntered = currencyAmount.text ?: ""
             val convertedAmountinSEK:Double = if (!amountEntered.isEmpty()) {
                 amountEntered.toString().toFloat() * conversionRate
             } else 0.0
-            val toast = Toast.makeText(this, "SEK: " + String.format("%.2f", convertedAmountinSEK), Toast.LENGTH_LONG)
+            val toast = Toast.makeText(this, "$toCurrency: " + String.format("%.2f", convertedAmountinSEK), Toast.LENGTH_LONG)
             val toastView = toast.view
             toastView.background.setColorFilter(Color.DKGRAY, PorterDuff.Mode.SRC_IN)
+
+            textView.text = String.format("%.2f", convertedAmountinSEK)
+
             val messageView = toastView.findViewById<TextView>(android.R.id.message)
             messageView.setTextColor(Color.WHITE)
             toast.show()

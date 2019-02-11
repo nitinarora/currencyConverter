@@ -8,34 +8,45 @@
         tools:context=".MainActivity" android:layout_marginStart="0dp" android:layout_marginTop="0dp">
     <ImageView
             android:layout_width="match_parent"
-            android:layout_height="157dp" app:srcCompat="@drawable/currency"
+            android:layout_height="154dp" app:srcCompat="@drawable/coins"
             android:layout_alignParentStart="true"
             android:id="@+id/imageView"
-            android:layout_alignParentTop="true" android:layout_marginTop="199dp" android:contentDescription="@string/applogo"/>
+            android:layout_alignParentTop="true" android:layout_marginTop="202dp"
+            android:contentDescription="@string/applogo"/>
     <Button
             android:text="@string/convert"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/button"
             android:layout_centerHorizontal="true"
-            android:padding="10dp" android:layout_alignParentTop="true" android:layout_marginTop="121dp"/>
+            android:padding="10dp" android:layout_alignParentTop="true" android:layout_marginTop="147dp"/>
 
     <EditText
-            android:layout_width="195dp"
+            android:layout_width="175dp"
             android:layout_height="50dp"
             android:inputType="numberDecimal"
             android:ems="10"
             android:id="@+id/editText"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="32dp"
             android:hint="@string/enter_currency"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="8dp"/>
+            android:layout_alignParentEnd="true" android:layout_alignTop="@+id/spinner" android:layout_marginEnd="6dp"/>
 
     <Spinner
             android:layout_width="170dp"
             android:layout_height="50dp"
             android:layout_alignParentStart="true"
             android:id="@+id/spinner"
-            android:layout_alignTop="@+id/editText"/>
+            android:layout_alignParentTop="true" android:layout_marginTop="25dp"/>
+    <Spinner
+            android:layout_width="170dp"
+            android:layout_height="50dp"
+            android:layout_alignParentStart="true"
+            android:id="@+id/spinner2"
+            android:layout_above="@+id/button" android:layout_marginBottom="-147dp"/>
+    <TextView
+            android:text="0.00"
+            android:layout_width="175dp"
+            android:layout_height="50dp"
+            android:id="@+id/textView"
+            tools:text="0.00" android:layout_alignTop="@+id/spinner2" android:layout_alignStart="@+id/editText"
+            android:textSize="22sp" android:textAlignment="center" android:gravity="center_vertical|center_horizontal"/>
 </RelativeLayout>
