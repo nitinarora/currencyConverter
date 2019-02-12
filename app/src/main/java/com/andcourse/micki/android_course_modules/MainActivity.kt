@@ -91,7 +91,7 @@ class MainActivity : AppCompatActivity() {
         currencyList.setSelection(arrayAdapter.getPosition(savedFromCurrency))
         toCurrencyList.setSelection(arrayAdapter.getPosition(savedToCurrency))
 
-        var fromCurrency:String
+        var fromCurrency: String
         var toCurrency: String
 
         currencyList.onItemSelectedListener = object : OnItemSelectedListener {
@@ -103,10 +103,11 @@ class MainActivity : AppCompatActivity() {
                 val editor = sharedPreferences.edit()
                 fromCurrency = currencyList.selectedItem.toString()
                 toCurrency = toCurrencyList.selectedItem.toString()
-                extractConversionRate(fromCurrency, toCurrency)
                 editor.putString("fromCurrency", fromCurrency)
                 editor.putString("toCurrency", toCurrency)
                 editor.apply()
+                extractConversionRate(sharedPreferences.getString("fromCurrency", "USD")
+                    ?: fromCurrency, sharedPreferences.getString("toCurrency", "SEK") ?: toCurrency)
             }
         }
         toCurrencyList.onItemSelectedListener = object : OnItemSelectedListener {
@@ -118,26 +119,22 @@ class MainActivity : AppCompatActivity() {
                 val editor = sharedPreferences.edit()
                 fromCurrency = currencyList.selectedItem.toString()
                 toCurrency = toCurrencyList.selectedItem.toString()
-                extractConversionRate(fromCurrency, toCurrency)
                 editor.putString("fromCurrency", fromCurrency)
                 editor.putString("toCurrency", toCurrency)
                 editor.apply()
+                extractConversionRate(sharedPreferences.getString("fromCurrency", "USD")
+                    ?: fromCurrency, sharedPreferences.getString("toCurrency", "SEK") ?: toCurrency)
             }
         }
 
         convertButton.setOnClickListener {
-//            val editor = sharedPreferences.edit()
-            val savedFromCurrency = sharedPreferences.getString("fromCurrency", "USD")
             val savedToCurrency = sharedPreferences.getString("toCurrency", "SEK")
-//            fromCurrency = currencyList.selectedItem.toString()
-//            toCurrency = toCurrencyList.selectedItem.toString()
-            val conversionRate = extractConversionRate(savedFromCurrency, savedToCurrency)
-//            editor.putString("fromCurrency", fromCurrency)
-//            editor.putString("toCurrency", toCurrency)
-//            editor.apply()
+            val conversionRate = extractConversionRate(sharedPreferences.getString("fromCurrency", "USD")
+                ?: "USD", savedToCurrency ?: "SEK")
+
 
             val amountEntered = currencyAmount.text ?: ""
-            val convertedAmountinSEK:Double = if (!amountEntered.isEmpty()) {
+            val convertedAmountinSEK: Double = if (!amountEntered.isEmpty()) {
                 amountEntered.toString().toFloat() * conversionRate
             } else 0.0
             val toast = Toast.makeText(this, "$savedToCurrency: " + String.format("%.2f", convertedAmountinSEK), Toast.LENGTH_LONG)
