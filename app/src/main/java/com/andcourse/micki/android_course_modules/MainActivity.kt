@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
     private var currentConversionRate: Double = 0.0
 
     private fun extractConversionRate(fromCurrency: String, toCurrency: String): Double {
-        val apiURL = URL("http://free.currencyconverterapi.com/api/v5/convert?q=$fromCurrency" + "_" + "$toCurrency&compact=y")
+        val apiURL = URL("http://free.currencyconverterapi.com/api/v5/convert?q=$fromCurrency" + "_" + "$toCurrency&compact=y&apiKey=bd2d9364f4c8337aaf50")
 
         Volley.newRequestQueue(this).add<String?>(StringRequest(Request.Method.GET, apiURL.toString(), Response.Listener<String> { response ->
             val conversionValue = JSONObject(response)
